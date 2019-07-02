@@ -26,8 +26,8 @@ public class GoalChecker : MonoBehaviour
         string layerName = LayerMask.LayerToName(t.gameObject.layer);
         if( layerName == "Ball")
         {
-            score+=3;
-            // result.text = "result  =  " + score.ToString;
+            score+=1;
+            result.text ="result\n" + score;
         }
     }
 }

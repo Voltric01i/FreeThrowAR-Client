@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3650188272004456466}
   - component: {fileID: 3650188272004456467}
+  - component: {fileID: 1895567229}
   m_Layer: 0
   m_Name: ThrowController
   m_TagString: Untagged
@@ -43,5 +44,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c116651395f97744998feaa749ebdfd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ThrowObject: {fileID: 8727058360614597803, guid: 78e8594cd1380394991383452733e9a7,
-    type: 3}
+  port: 30000
+  serverIP: 192.168.0.200
+  ThrowObject: {fileID: 0}
+  NetworkController: {fileID: 0}
+  mainCamera: {fileID: 0}
+  initBallWait_ms: 1
+--- !u!114 &1895567229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3650188272004456464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dbd32cbecb3b41bfb818393b0748192, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuUI: {fileID: 0}

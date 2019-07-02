@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ThrowSample.unity
     guid: 285cfb262cd7c1244bb7624b4c77970b
+  - enabled: 1
+    path: Assets/Scenes/PerfomanceTest.unity
+    guid: 64a379b52e2df462482ba7ccc905d2b3
   m_configObjects: {}

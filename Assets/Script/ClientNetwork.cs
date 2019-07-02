@@ -31,9 +31,6 @@ public class ClientNetwork : MonoBehaviour
     public int port = 30000;
     public string serverIP = "192.168.0.200";
 
-    public GameObject sphere;
-
-
     // Start is called before the first frame update
     void Start()
     {

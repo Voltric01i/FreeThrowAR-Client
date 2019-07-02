@@ -24,9 +24,6 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
     protected TrackableBehaviour.Status m_PreviousStatus;
     protected TrackableBehaviour.Status m_NewStatus;
 
-    
-    public UnityEvent OnTrackingAction;
-    public UnityEvent OffTrackingAction;
 
     #endregion // PROTECTED_MEMBER_VARIABLES
 
@@ -91,8 +88,7 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
         var rendererComponents = GetComponentsInChildren<Renderer>(true);
         var colliderComponents = GetComponentsInChildren<Collider>(true);
         var canvasComponents = GetComponentsInChildren<Canvas>(true);
-        
-        OnTrackingAction.Invoke ();
+    
 
         // Enable rendering:
         foreach (var component in rendererComponents)
@@ -114,7 +110,6 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
         var colliderComponents = GetComponentsInChildren<Collider>(true);
         var canvasComponents = GetComponentsInChildren<Canvas>(true);
 
-        OffTrackingAction.Invoke (); 
 
         // Disable rendering:
         foreach (var component in rendererComponents)
