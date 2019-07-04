@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using System;
 using System.Net;
 using System.IO;
@@ -27,6 +28,9 @@ public class ClientNetwork : MonoBehaviour
 {
     private TcpClient connection;
     GameState currentState;
+    public UnityEvent OnReceiveBallDataEvent;
+    public UnityEvent OnPlayerJoinedEvent;
+    public UnityEvent OnGameStartEvent;
 
     public int port = 30000;
     public string serverIP = "192.168.0.200";
@@ -103,12 +107,14 @@ public class ClientNetwork : MonoBehaviour
             int msgValue = int.Parse(msgJson["value"].ToString());
             Debug.Log("Joined: " + msgValue);
             OnPlayerJoined(msgValue);
+
         }
         else if (msgName == "start" && currentState == GameState.Matching)
         {
             // ゲームスタートが通知された時
             GameStart();
             OnGameStart();
+            
         }
         else if(msgName == "ball" && currentState == GameState.Playing)
         {
@@ -144,10 +150,6 @@ public class ClientNetwork : MonoBehaviour
         }
 
     }
-    
-
-
-
 
 // 状態遷移メソッド
 
@@ -178,11 +180,8 @@ public class ClientNetwork : MonoBehaviour
     }
 
 
-
-
-
  // パブリックメソッドとコールバック
-    public void ConnectToSerer()
+    public void ConnectToServer()
     {
         GameMatching();
         Connect(serverIP, port);
@@ -192,37 +191,41 @@ public class ClientNetwork : MonoBehaviour
     public void GameStartReady()
     {
         SendMessageToServer("{\"name\":\"start\"}");
+
+        GameStart();
+        OnGameStart();
+
     }
 
     protected virtual void OnPlayerJoined(int playerCount)
     {
-
+        OnPlayerJoinedEvent.Invoke();
     }
 
-    protected virtual void OnGameStart()
-    {
-
+    void OnGameStart()
+{
+       OnGameStartEvent.Invoke();  
     }
 
     public void SendBallData(Vector3 pos, Vector3 way)
     {
-        Dictionary<string, object> dict = new Dictionary<string, object>();
-        dict.Add("name", "ball");
-        dict.Add("posx", pos.x);
-        dict.Add("posy", pos.y);
-        dict.Add("posz", pos.z);
-        dict.Add("wayx", way.x);
-        dict.Add("wayy", way.y);
-        dict.Add("wayz", way.z);
-        string json = Json.Serialize(dict);
-        SendMessageToServer(json);
-        
-
+        if(currentState == GameState.Playing){
+            Dictionary<string, object> dict = new Dictionary<string, object>();
+            dict.Add("name", "ball");
+            dict.Add("posx", pos.x);
+            dict.Add("posy", pos.y);
+            dict.Add("posz", pos.z);
+            dict.Add("wayx", way.x);
+            dict.Add("wayy", way.y);
+            dict.Add("wayz", way.z);
+            string json = Json.Serialize(dict);
+            SendMessageToServer(json);
+        }
     }
 
     protected virtual void OnReceiveBallData(Vector3 pos, Vector3 way)
     {
-
+        OnReceiveBallDataEvent.Invoke();
     }
 
     // ゲーム終了時に得点を送信

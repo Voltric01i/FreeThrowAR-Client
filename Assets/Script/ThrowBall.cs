@@ -21,6 +21,10 @@ public class ThrowBall : ClientNetwork
         initNextBall();
     }
 
+    public GameObject getBall(){
+        return ThrowObject;
+    }
+
     void initNextBall(){
         if(mainCamera.transform.childCount == 1){
             nextBall = Instantiate(ThrowObject);
@@ -49,24 +53,33 @@ public class ThrowBall : ClientNetwork
             nextBall_rigitBody.useGravity = true;
             nextBall_rigitBody.AddForce(thrForce,ForceMode.Impulse);
 
-            //cn.SendBallData(thrPosition,thrForce);
+            cn.SendBallData(thrPosition,thrForce);
             initBallWaitCounter += initBallWait_ms * 60;
         }
 
     }
 
-    protected override void OnReceiveBallData(Vector3 pos, Vector3 way)
+
+    public void OnReceiveBallData()
     {
+        Vector3 pos = new Vector3(0,0,0);
+        Vector3 way = new Vector3(0,0,0);
         GameObject ThrowThing = Instantiate(ThrowObject);
         Rigidbody thR = ThrowThing.GetComponent<Rigidbody>();
         ThrowThing.transform.position = pos;
         nextBall_rigitBody.useGravity = true;
         thR.AddForce(way,ForceMode.Impulse);
+    } 
+}
+
+class cn : ClientNetwork{
+    public GameObject ThrowBall;
+    protected override void OnReceiveBallData(Vector3 pos, Vector3 way)
+    {
+        GameObject ThrowThing = Instantiate(ThrowBall);
+        Rigidbody thR = ThrowThing.GetComponent<Rigidbody>();
+        ThrowThing.transform.position = pos;
+        thR.useGravity = true;
+        thR.AddForce(way,ForceMode.Impulse);
     }
-
- 
-
-
-
-
 }

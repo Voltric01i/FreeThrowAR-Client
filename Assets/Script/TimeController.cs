@@ -10,7 +10,7 @@ public class TimeController : MonoBehaviour
     public Text timeText;
     public UnityEvent onTimerEnded;
     float countTime_s;
-    bool startFlag = true;
+    bool startFlag = false;
     
 
 
@@ -25,6 +25,7 @@ public class TimeController : MonoBehaviour
     {
         if(countTime_s <= 0){
             onTimerEnded.Invoke();
+            countTime_s = endTime_s;
         }
 
         if(startFlag){
