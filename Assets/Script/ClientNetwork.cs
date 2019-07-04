@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using System;
 using System.Net;
 using System.IO;
@@ -9,6 +8,8 @@ using System.Text;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using MiniJSON;
+using UnityEngine.UI;
+using UnityEngine.Events;
 
 /// <summary>
 /// サーバーに接続してデータのやり取りをする
@@ -16,9 +17,10 @@ using MiniJSON;
 /// </summary>
 
 
-enum GameState
+public enum GameState
 {
     Matching,
+    Ready,
     Playing,
     Finish,
     Reset
@@ -28,30 +30,43 @@ public class ClientNetwork : MonoBehaviour
 {
     private TcpClient connection;
     GameState currentState;
-    public UnityEvent OnReceiveBallDataEvent;
-    public UnityEvent OnPlayerJoinedEvent;
-    public UnityEvent OnGameStartEvent;
+
+    int playerValue = 0;
 
     public int port = 30000;
     public string serverIP = "192.168.0.200";
 
+    //デバッグ用
+    public Text statusText;
+    public Text textReceivedMessage;
+    // public String input;
+    private string receivedMessage = "";
+    
     // Start is called before the first frame update
     void Start()
     {
         currentState = GameState.Reset;
-        
+        // serverIP = input;
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        // デバッグ用
+        // statusText.text = "State: " + currentState.ToString();
+        // textReceivedMessage.text = "Received: " + receivedMessage;
     }
 
     void Quit()
     {
         connection.Close();
     }
+
+    // public void InputText()
+    // {
+    //     serverIP = input;
+    // }
+    
 
 
 // ネットワーク
@@ -74,6 +89,8 @@ public class ClientNetwork : MonoBehaviour
                     string str = reader.ReadLine();
                     Debug.Log("MessageReceived: " + str);
                     OnMessage(str);
+                    receivedMessage = str;
+
                 }
 
                 if (connection.Client.Poll(1000, SelectMode.SelectRead) && (connection.Client.Available == 0))
@@ -98,23 +115,34 @@ public class ClientNetwork : MonoBehaviour
         IDictionary msgJson = null;
         var msgName = "";
 
-        msgJson = (IDictionary)Json.Deserialize(str);
-        msgName = (string)msgJson["name"];
+        try
+        { 
+            msgJson = (IDictionary)Json.Deserialize(str);
+            msgName = msgJson["name"].ToString();
+        }
+        catch (Exception e)
+        {
+            Debug.Log("before if:" + e);
+        }
         
         if (msgName == "joined")
         {
-            // サーバーに誰かが接続した時
-            int msgValue = int.Parse(msgJson["value"].ToString());
-            Debug.Log("Joined: " + msgValue);
-            OnPlayerJoined(msgValue);
-
+            try
+            {
+                // サーバーに誰かが接続した時
+                int msgValue = int.Parse(msgJson["value"].ToString());
+                OnPlayerJoined(msgValue);
+            }
+            catch (Exception e)
+            {
+                Debug.Log("joined:" + e);
+            }
         }
-        else if (msgName == "start" && currentState == GameState.Matching)
+        else if (msgName == "start" && currentState == GameState.Ready)
         {
             // ゲームスタートが通知された時
             GameStart();
             OnGameStart();
-            
         }
         else if(msgName == "ball" && currentState == GameState.Playing)
         {
@@ -133,8 +161,8 @@ public class ClientNetwork : MonoBehaviour
         }
         else if (msgName == "ranking" && currentState == GameState.Finish)
         {
-            var points = (IList)msgJson["value"];
-            OnReceiveRankingData(points);
+            var pointList = (IList)msgJson["value"];
+            OnReceiveRankingData(pointList);
         }
 
     }
@@ -150,6 +178,10 @@ public class ClientNetwork : MonoBehaviour
         }
 
     }
+    
+
+
+
 
 // 状態遷移メソッド
 
@@ -157,6 +189,12 @@ public class ClientNetwork : MonoBehaviour
     {
         Debug.Log("State: Matching");
         currentState = GameState.Matching;
+    }
+
+    private void GameReady()
+    {
+        Debug.Log("State: Ready");
+        currentState = GameState.Ready;
     }
 
     private void GameStart()
@@ -180,59 +218,75 @@ public class ClientNetwork : MonoBehaviour
     }
 
 
+
+
+
  // パブリックメソッドとコールバック
     public void ConnectToServer()
     {
-        GameMatching();
-        Connect(serverIP, port);
+        if (currentState == GameState.Reset)
+        {
+            GameMatching();
+            Connect(serverIP, port);
+        }
+    }
+
+    public GameState getStatus(){
+        return currentState;
+    }
+
+    public int getPlayerValue(){
+        return playerValue;
     }
 
     // ゲーム開始準備完了
     public void GameStartReady()
     {
-        SendMessageToServer("{\"name\":\"start\"}");
-
-        GameStart();
-        OnGameStart();
-
+        if (currentState == GameState.Matching)
+        {
+            GameReady();
+            SendMessageToServer("{\"name\":\"start\"}");
+        }
     }
 
-    protected virtual void OnPlayerJoined(int playerCount)
+    private void OnPlayerJoined(int playerCount)
     {
-        OnPlayerJoinedEvent.Invoke();
+        playerValue = playerCount;
     }
 
-    void OnGameStart()
-{
-       OnGameStartEvent.Invoke();  
+    private void OnGameStart()
+    {
+         
     }
 
     public void SendBallData(Vector3 pos, Vector3 way)
     {
-        if(currentState == GameState.Playing){
-            Dictionary<string, object> dict = new Dictionary<string, object>();
-            dict.Add("name", "ball");
-            dict.Add("posx", pos.x);
-            dict.Add("posy", pos.y);
-            dict.Add("posz", pos.z);
-            dict.Add("wayx", way.x);
-            dict.Add("wayy", way.y);
-            dict.Add("wayz", way.z);
-            string json = Json.Serialize(dict);
-            SendMessageToServer(json);
-        }
+        Dictionary<string, object> dict = new Dictionary<string, object>();
+        dict.Add("name", "ball");
+        dict.Add("posx", pos.x);
+        dict.Add("posy", pos.y);
+        dict.Add("posz", pos.z);
+        dict.Add("wayx", way.x);
+        dict.Add("wayy", way.y);
+        dict.Add("wayz", way.z);
+        string json = Json.Serialize(dict);
+        SendMessageToServer(json);
+        
+
     }
 
-    protected virtual void OnReceiveBallData(Vector3 pos, Vector3 way)
+    private void OnReceiveBallData(Vector3 pos, Vector3 way)
     {
-        OnReceiveBallDataEvent.Invoke();
     }
 
     // ゲーム終了時に得点を送信
     public void sendPointData(int point)
     {
-        GameFinish();
-        SendMessageToServer("{\"name\":\"finish\",\"value\":" + point + "}");
+        if (currentState == GameState.Playing)
+        {
+            GameFinish();
+            SendMessageToServer("{\"name\":\"finish\",\"value\":" + point + "}");
+        }
     }
 
     protected virtual void OnReceiveRankingData(IList pointList)
@@ -246,6 +300,8 @@ public class ClientNetwork : MonoBehaviour
         SendMessageToServer("{\"name\":\"reset\"}");
     }
     
+
+    // デバッグメソッド
     public void testBalldata1()
     {
         SendBallData(new Vector3(0.1111f, 0.2222f, 0.4424431f), new Vector3(3.444f, 3.555f, 3.666f));

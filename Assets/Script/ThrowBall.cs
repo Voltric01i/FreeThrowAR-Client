@@ -72,14 +72,14 @@ public class ThrowBall : ClientNetwork
     } 
 }
 
-class cn : ClientNetwork{
-    public GameObject ThrowBall;
-    protected override void OnReceiveBallData(Vector3 pos, Vector3 way)
-    {
-        GameObject ThrowThing = Instantiate(ThrowBall);
-        Rigidbody thR = ThrowThing.GetComponent<Rigidbody>();
-        ThrowThing.transform.position = pos;
-        thR.useGravity = true;
-        thR.AddForce(way,ForceMode.Impulse);
-    }
-}
+// class cn : ClientNetwork{
+//     public GameObject ThrowBall;
+//     protected override void OnReceiveBallData(Vector3 pos, Vector3 way)
+//     {
+//         GameObject ThrowThing = Instantiate(ThrowBall);
+//         Rigidbody thR = ThrowThing.GetComponent<Rigidbody>();
+//         ThrowThing.transform.position = pos;
+//         thR.useGravity = true;
+//         thR.AddForce(way,ForceMode.Impulse);
+//     }
+// }

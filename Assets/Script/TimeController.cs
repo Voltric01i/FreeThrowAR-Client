@@ -31,9 +31,9 @@ public class TimeController : MonoBehaviour
         if(startFlag){
             countTime_s -= Time.deltaTime; 
         }
-        timeText.text = "残り時間\n" +countTime_s;
-
+        timeText.text = (int)countTime_s + "";
         
+
     }
 
     public void gameStart(){

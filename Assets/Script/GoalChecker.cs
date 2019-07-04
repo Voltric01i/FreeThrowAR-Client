@@ -8,7 +8,7 @@ public class GoalChecker : MonoBehaviour
     public Text result;
     GameObject goal;
 
-    int score = 0;
+    static int score = 0;
     
     // Start is called before the first frame update
     void Start()
@@ -21,13 +21,17 @@ public class GoalChecker : MonoBehaviour
     {
         
     }
+
+    public static int getResult(){
+        return score;
+    }
     void OnTriggerEnter(Collider t)
     {
         string layerName = LayerMask.LayerToName(t.gameObject.layer);
         if( layerName == "Ball")
         {
             score+=1;
-            result.text ="result\n" + score;
+            result.text = score + "";
         }
     }
 }
