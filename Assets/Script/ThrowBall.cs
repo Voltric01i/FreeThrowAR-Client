@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ThrowBall : ClientNetwork
+public class ThrowBall : MonoBehaviour
 {
     public GameObject ThrowObject;
     public GameObject NetworkController;
@@ -17,7 +17,6 @@ public class ThrowBall : ClientNetwork
     void Start()
     {
         cn = NetworkController.GetComponent<ClientNetwork>();
-
         initNextBall();
     }
 
@@ -60,14 +59,12 @@ public class ThrowBall : ClientNetwork
     }
 
 
-    public void OnReceiveBallData()
+    public void throwRecevedBall(Vector3 pos, Vector3 way)
     {
-        Vector3 pos = new Vector3(0,0,0);
-        Vector3 way = new Vector3(0,0,0);
         GameObject ThrowThing = Instantiate(ThrowObject);
         Rigidbody thR = ThrowThing.GetComponent<Rigidbody>();
         ThrowThing.transform.position = pos;
-        nextBall_rigitBody.useGravity = true;
+        thR.useGravity = true;
         thR.AddForce(way,ForceMode.Impulse);
     } 
 }
