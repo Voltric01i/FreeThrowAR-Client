@@ -4,6 +4,7 @@
     {
 		_Split ("Split", float) = 8.0
 		_Degree ("Degree", float) = 30.0
+		_SqlSpeed ("Scroll Speed", float) = 5.0
 		_Color1 ("Color1", Color) = (1, 1, 0, 1)
 		_Color2 ("Color2", Color) = (0, 1, 1, 1)
 		_Color3 ("Color3", Color) = (1, 0, 1, 1)
@@ -32,11 +33,12 @@
                 float4 vertex : SV_POSITION;
             };
 
-			uniform float _Split;
-			uniform float _Degree;
-			uniform float4 _Color1;
-			uniform float4 _Color2;
-			uniform float4 _Color3;
+			 float _Split;
+			 float _Degree;
+			 float _SqlSpeed;
+			 float4 _Color1;
+			 float4 _Color2;
+			 float4 _Color3;
 
             v2f vert (appdata v)
             {
@@ -48,7 +50,7 @@
 
             float4 frag (v2f i) : COLOR
             {
-				i.uv.y += _Time.y / 4.;
+				i.uv.y += _Time.x * _SqlSpeed;
 				i.uv.y -= tan(radians(_Degree)) * i.uv.x;
 				float id = fmod(floor(i.uv.y * _Split), 3.);
 				

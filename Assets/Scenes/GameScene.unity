@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.45024157, g: 0.5002714, b: 0.5753683, a: 1}
+  m_IndirectSpecularColor: {r: 0.43748954, g: 0.48531055, b: 0.5655848, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -51,8 +51,8 @@ LightmapSettings:
     m_IndirectOutputScale: 1
     m_AlbedoBoost: 1
     m_EnvironmentLightingMode: 0
-    m_EnableBakedLightmaps: 1
-    m_EnableRealtimeLightmaps: 1
+    m_EnableBakedLightmaps: 0
+    m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
     serializedVersion: 12
     m_Resolution: 2
@@ -491,17 +491,17 @@ Light:
   m_Enabled: 1
   serializedVersion: 9
   m_Type: 1
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 0.9, g: 0.9, b: 0.9, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
-    m_Resolution: -1
+    m_Type: 1
+    m_Resolution: 0
     m_CustomResolution: -1
-    m_Strength: 1
+    m_Strength: 0.375
     m_Bias: 0.05
     m_NormalBias: 0.4
     m_NearPlane: 0.2
@@ -531,7 +531,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 1
+  m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -548,13 +548,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
-  m_LocalRotation: {x: -0.21546774, y: -0.8416845, z: 0.42806932, w: 0.24879196}
-  m_LocalPosition: {x: -1486, y: 1183, z: 5440}
+  m_LocalRotation: {x: 0.76604444, y: 0, z: 0, w: 0.64278764}
+  m_LocalPosition: {x: 0, y: 316, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 37.835003, y: -130.195, z: 46.798}
+  m_LocalEulerAnglesHint: {x: 100, y: 0, z: 0}
 --- !u!1 &719734990
 GameObject:
   m_ObjectHideFlags: 0
@@ -888,6 +888,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4614301913308704993, guid: 4dbf912836cb37b4d94190aff67b17a1,
+        type: 3}
+      propertyPath: m_Name
+      value: ThrowButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 4614301913308704993, guid: 4dbf912836cb37b4d94190aff67b17a1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4614301911939113367, guid: 4dbf912836cb37b4d94190aff67b17a1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1162,16 +1172,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Camera
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4614301913308704993, guid: 4dbf912836cb37b4d94190aff67b17a1,
-        type: 3}
-      propertyPath: m_Name
-      value: ThrowButton
-      objectReference: {fileID: 0}
-    - target: {fileID: 4614301913308704993, guid: 4dbf912836cb37b4d94190aff67b17a1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4614301913342683347, guid: 4dbf912836cb37b4d94190aff67b17a1,
         type: 3}
@@ -2791,6 +2791,36 @@ PrefabInstance:
       propertyPath: result
       value: 
       objectReference: {fileID: 796518681}
+    - target: {fileID: 7371700635818045070, guid: 633e05dc45f814c9d90b1f612b1dc065,
+        type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7371700635818045070, guid: 633e05dc45f814c9d90b1f612b1dc065,
+        type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4513963503264070407, guid: 633e05dc45f814c9d90b1f612b1dc065,
+        type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4513963503264070407, guid: 633e05dc45f814c9d90b1f612b1dc065,
+        type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4513963503264070401, guid: 633e05dc45f814c9d90b1f612b1dc065,
+        type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4513963503264070401, guid: 633e05dc45f814c9d90b1f612b1dc065,
+        type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 633e05dc45f814c9d90b1f612b1dc065, type: 3}
 --- !u!1 &4614301913111581093 stripped
