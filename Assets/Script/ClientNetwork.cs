@@ -35,7 +35,10 @@ public class ClientNetwork : MonoBehaviour
 
     public int port = 30000;
     public string serverIP = "192.168.0.200";
+    public InputField input;
 
+    public GameObject throwBall;
+    ThrowBall tB;
     //デバッグ用
     public Text statusText;
     public Text textReceivedMessage;
@@ -46,7 +49,17 @@ public class ClientNetwork : MonoBehaviour
     void Start()
     {
         currentState = GameState.Reset;
+        input.text = PlayerPrefs.GetString ("ServerIP", "192.168.200.1");
+        InputText();
+        tB = throwBall.GetComponent<ThrowBall>();
         // serverIP = input;
+    }
+
+    public void InputText()
+    {
+        serverIP = input.text;
+        PlayerPrefs.SetString ("ServerIP", input.text);
+        PlayerPrefs.Save ();
     }
 
     // Update is called once per frame
@@ -55,18 +68,14 @@ public class ClientNetwork : MonoBehaviour
         // デバッグ用
         // statusText.text = "State: " + currentState.ToString();
         // textReceivedMessage.text = "Received: " + receivedMessage;
+
     }
 
     void Quit()
     {
+
         connection.Close();
     }
-
-    // public void InputText()
-    // {
-    //     serverIP = input;
-    // }
-    
 
 
 // ネットワーク
@@ -156,7 +165,7 @@ public class ClientNetwork : MonoBehaviour
 
             Vector3 pos = new Vector3(posx, posy, posz);
             Vector3 way = new Vector3(wayx, wayy, wayz);
-
+            Debug.Log("State: Ball Receved");
             OnReceiveBallData(pos, way);
         }
         else if (msgName == "ranking" && currentState == GameState.Finish)
@@ -277,6 +286,9 @@ public class ClientNetwork : MonoBehaviour
 
     private void OnReceiveBallData(Vector3 pos, Vector3 way)
     {
+        var ball =  tB.getBall();
+        
+        tB.throwRecevedBall(pos,way);
     }
 
     // ゲーム終了時に得点を送信
