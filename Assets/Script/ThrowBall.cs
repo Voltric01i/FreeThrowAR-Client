@@ -49,7 +49,7 @@ public class ThrowBall : MonoBehaviour
         if(mainCamera.transform.childCount == 2){
             nextBall.transform.parent = null;
             var thrPosition = nextBall.transform.position;
-            var thrForce = mainCamera.transform.forward * 20000 + new Vector3(0,0,1) * 28000;
+            var thrForce = mainCamera.transform.forward * 20000 * 0.7f + new Vector3(0, 0, 1) * 28000 * 0.9f;
             nextBall_rigitBody.useGravity = true;
             nextBall_rigitBody.AddForce(thrForce,ForceMode.Impulse);
 
