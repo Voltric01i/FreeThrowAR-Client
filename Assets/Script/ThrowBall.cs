@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class ThrowBall : MonoBehaviour
 {
-    public GameObject ThrowObject;
+    public GameObject MyThrowObject;
+   public GameObject OtherThrowObject; 
     public GameObject NetworkController;
     public Camera mainCamera;
     GameObject nextBall;
@@ -21,12 +22,12 @@ public class ThrowBall : MonoBehaviour
     }
 
     public GameObject getBall(){
-        return ThrowObject;
+        return MyThrowObject;
     }
 
     void initNextBall(){
         if(mainCamera.transform.childCount == 1){
-            nextBall = Instantiate(ThrowObject);
+            nextBall = Instantiate(MyThrowObject);
             nextBall_rigitBody = nextBall.GetComponent<Rigidbody>();
             nextBall.transform.parent = mainCamera.transform;
             nextBall.transform.position = mainCamera.transform.position +  (mainCamera.transform.forward * 300 +  new Vector3(0,0,-1) * 70);
@@ -61,7 +62,7 @@ public class ThrowBall : MonoBehaviour
 
     public void throwRecevedBall(Vector3 pos, Vector3 way)
     {
-        GameObject ThrowThing = Instantiate(ThrowObject);
+        GameObject ThrowThing = Instantiate(OtherThrowObject);
         Rigidbody thR = ThrowThing.GetComponent<Rigidbody>();
         ThrowThing.transform.position = pos;
         thR.useGravity = true;

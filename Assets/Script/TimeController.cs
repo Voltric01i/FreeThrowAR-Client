@@ -9,6 +9,8 @@ public class TimeController : MonoBehaviour
     public float endTime_s;
     public Text timeText;
     public UnityEvent onTimerEnded;
+    public UnityEvent onTimerOneMinute;
+    public UnityEvent onTimerTwoMinute;
     float countTime_s;
     bool startFlag = false;
     
@@ -25,7 +27,13 @@ public class TimeController : MonoBehaviour
     {
         if(countTime_s <= 0){
             onTimerEnded.Invoke();
+
             countTime_s = endTime_s;
+        }else if(countTime_s == 60){
+            onTimerOneMinute.Invoke();
+
+        }else if(countTime_s == 120){
+            onTimerTwoMinute.Invoke();
         }
 
         if(startFlag){
